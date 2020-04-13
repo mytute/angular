@@ -1,5 +1,6 @@
 # Angular Tutorial
 
+[Binding to HTML properties  ](#binding-to-html-properties )
 
 # Data Binding (video 10)
 
