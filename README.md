@@ -1,8 +1,19 @@
 # Angular Tutorial
 
-[Binding to HTML properties  ](#binding-to-html-properties )
+[Data Binding](#data-binding)
+[Property Binding](#property-binding)
+[Native Event Binding](#native-event-binding)
+[Two Way Data Binding](#two-way-data-binding)
+[Custom Property Binding](#custom-property-binding)
+[Custom Event Binding](#custom-event-binding)
+[Routing](#Routing)
+[Adding Links](#adding-links)
+[Route Params](#route-params)
+[Routing](#Routing)
+[Directive Introduction](#directive-introduction)  
+[ngFor](#ngfor)
 
-# Data Binding (video 10)
+# Data Binding
 
 ### data transfer from file.ts to file.html in same component
 
@@ -35,7 +46,7 @@ export class HomeComponent implements OnInit {
 <p>{{homeTitle}}</p>
 ```
 
-# Property Binding (video 11)
+# Property Binding
 
 ### data transfer from file.ts to file.html in same component
 
@@ -93,7 +104,7 @@ export class HomeComponent implements OnInit {
 <input [value]=myString/>
 ```
 
-# Two Way Data Binding (video 13)
+# Two Way Data Binding
 
 ### Here dynamically changing value from shared variable(ninja) that located in file.ts .(Binding in same component)
 
@@ -136,7 +147,7 @@ export class HomeComponent implements OnInit {
 
 
 
-# Native Event Binding (video 12)
+# Native Event Binding
 
 ### Here we send click event from file.html to file.ts in same component. (Binding in same component)
 
@@ -172,7 +183,7 @@ export class HomeComponent implements OnInit {
 ```
 
 
-# Custom Property Binding (video 14)
+# Custom Property Binding
 
 ### Here we transfer data between two components.
 
@@ -242,7 +253,7 @@ export class HomeComponent implements OnInit {
 Finally we can represent data values from app.component.ts on home.component.html
 
 
-# Custom Event Binding (video 15)
+# Custom Event Binding
 
 ### Here we make custom event among components.
 
@@ -316,8 +327,8 @@ export class HomeComponent implements OnInit {
 <button (click)="fireYellEvent($event)" > Hit Me</button>
 ```
 
-
-# Routing (video 16)
+[Routing](#Routing)
+# Routing
 
 *  Here we declare routes in the `app-routing.module.ts` file.
 *   The path: "" parameter relates to the url where the user will land when entered in the browser’s address bar.
@@ -368,7 +379,7 @@ following code show how to link our created routes on root.html file.
 <router-outlet> </router-outlet>
 ```
 
-# Adding Links (video 17)
+# Adding Links
 
 Following tutorial we are linking previous created routes on html page with two methods .
 1. with normal  href html linking ( with reload hole page )
@@ -399,7 +410,7 @@ Following tutorial we are linking previous created routes on html page with two 
 </section>
 ```
 
-# Route Params (video 18)
+# Route Params
 
 * we are going to grap link parameter on 'tables' path.  
 *  first we need  add variable on 'tables' path in where we created routes(angular 9 > app-routing.module.ts ).
@@ -472,7 +483,7 @@ export class TableComponent implements OnInit {
     <p>{{ninja}}</p>
 ```
 
-# Directive Introduction (video 19)
+# Directive Introduction
 
 * Directives are instructions which tell Angular to do something.     
 eg:
@@ -551,4 +562,4 @@ export class DirectoryComponent implements OnInit {
 ```
 this example also bind with variable from file.component.ts file for dynamically changes .
 
-# ngFor  (video 20)
+# ngFor
