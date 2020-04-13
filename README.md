@@ -1,16 +1,16 @@
 # Angular Tutorial
 
-[Data Binding](#data-binding)
-[Property Binding](#property-binding)
-[Native Event Binding](#native-event-binding)
-[Two Way Data Binding](#two-way-data-binding)
-[Custom Property Binding](#custom-property-binding)
-[Custom Event Binding](#custom-event-binding)
-[Routing](#Routing)
-[Adding Links](#adding-links)
-[Route Params](#route-params)
-[Routing](#Routing)
-[Directive Introduction](#directive-introduction)  
+[Data Binding](#data-binding)    
+[Property Binding](#property-binding)    
+[Native Event Binding](#native-event-binding)    
+[Two Way Data Binding](#two-way-data-binding)    
+[Custom Property Binding](#custom-property-binding)    
+[Custom Event Binding](#custom-event-binding)    
+[Routing](#Routing)    
+[Adding Links](#adding-links)    
+[Route Params](#route-params)    
+[Routing](#Routing)    
+[Directive Introduction](#directive-introduction)    
 [ngFor](#ngfor)
 
 # Data Binding
