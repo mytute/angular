@@ -1,3 +1,4 @@
+
 # Angular Tutorial
 
 [Data Binding](#data-binding)    
@@ -12,6 +13,46 @@
 [Routing](#Routing)    
 [Directive Introduction](#directive-introduction)    
 [ngFor](#ngfor)
+[get data from api](#get-data-from-api)
+
+
+
+installation
+to work with angular should install node js to your os.
+
+to check node version
+$ node -v
+
+to install angular cli globally
+$ npm install -g @angular/cli
+
+to check angular version
+$ ng --version
+
+
+to start new project
+$ ng new <my-app-name>
+   step run 1: type yes for add angular routes
+   step run 2: select 'SCSS' for stylesheet format
+
+to open location in VSCODE in terminal
+$ code .
+
+to start already created project
+first you need go to location that have index file
+$ ng serve -o
+  '-o' option for open starting project on browser
+
+to create new component
+$ ng generate component <component-name>
+
+
+to create new service
+$ ng generate service <service-name>
+
+
+
+
 
 # Data Binding
 
@@ -563,3 +604,92 @@ export class DirectoryComponent implements OnInit {
 this example also bind with variable from file.component.ts file for dynamically changes .
 
 # ngFor
+
+
+
+# get data from api
+
+to create new service
+$ ng generate service <service-name>
+
+just think we make service call 'http'
+
+> name.service.ts    
+
+````javascript
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http'; /* add new > line*/
+
+@Injectable({
+  providedIn: 'root'
+})
+export class HttpService {
+
+  constructor(private http:HttpClient) { } /* add new > 'private http:HttpClientModule' */
+
+  myMethod(){  /* add new > fucntion */
+      return this.http.get('https://api.openbrewerydb.org/breweries');
+  }
+
+}
+````
+
+> app.module.ts   
+
+````javascript
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './/app-routing.module';
+import { HomeComponent } from './home/home.component';
+import { ProductsComponent } from './products/products.component';
+
+import { HttpClientModule } from '@angular/common/http'; /* add new > line */
+
+
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    ProductsComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule, /* add new > line */
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+````
+
+> home.component.ts  
+
+````javascript
+import { Component, OnInit } from '@angular/core';
+
+import { HttpService } from '../http.service' /* add new > line*/
+
+@Component({
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
+})
+export class HomeComponent implements OnInit {
+
+  constructor(private _http:HttpService) { } /* add new > 'private _http:HttpService' */
+
+  ngOnInit(): void {
+
+    this._http.myMethod().subscribe(data=>{ /* add new > function*/
+       console.log("api data : ", data);
+    });
+
+  }
+
+}
+
+````
