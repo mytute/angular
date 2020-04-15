@@ -14,6 +14,8 @@
 [Directive Introduction](#directive-introduction)    
 [ngFor](#ngfor)
 [get data from api](#get-data-from-api)
+[angular deploy with node js](#angular-deploy-with-node-js)
+[uninstall angular-cli](#uninstall-angular-cli)
 
 
 
@@ -693,3 +695,53 @@ export class HomeComponent implements OnInit {
 }
 
 ````
+
+# angular deploy with node js
+
+## Proxy To Backend
+
+Using the proxying support in webpack's dev server we can highjack certain URLs and
+send them to a backend server. We do this by passing a file to --proxy-config.
+for more info you can see[documentation](https://github.com/angular/angular-cli/blob/master/docs/documentation/stories/proxy.md).     
+
+you have to customly create <name>.json file for proxy
+``` javascript
+{
+  "/api": {
+    "target": "http://localhost:3000",
+    "secure": false
+  }
+}
+```
+
+to run angular using Proxy
+```shell
+$ ng serve --proxy-config proxy.conf.json
+```
+
+store on dist file on <mark>static-folder</mark> or <mark>nginx-server</mark>
+```javascript
+app.use(express.static(path.join(__dirname,'./dist/my-app/')));
+```
+
+use Get respons to send html page .
+```javascript
+app.get('/',function(req,res){
+    return res.sendFile(path.join(__dirname,'./dist/my-app/index.html'));
+});
+```
+
+# uninstall angular-cli
+
+Using following commands to uninstall :
+
+```shell
+npm uninstall -g @angular/cli
+npm cache clean --force  // use os admin
+```
+
+reinstall angular :
+
+```shell
+npm install -g @angular/cli
+```
