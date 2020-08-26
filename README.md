@@ -230,7 +230,8 @@ export class HomeComponent implements OnInit {
 
 ### Here we transfer data between two components.
 
-we are using data sender component's html file as media of transferring between two components.
+we are using data sender component's html file as media of transferring between two components.     
+data sending parent to child.     
 
 >app.ts
 
@@ -298,7 +299,8 @@ Finally we can represent data values from app.component.ts on home.component.htm
 
 # Custom Event Binding
 
-### Here we make custom event among components.
+### Here we make custom event among components.    
+event sending child to parent.
 
 In here we make app.html `(onYell)` event listen from home.ts using  
 `@Output onYell = new EventEmitter()``
@@ -422,6 +424,16 @@ following code show how to link our created routes on root.html file.
 <router-outlet> </router-outlet>
 ```
 
+
+
+  URL pattern /heroes/:limit. Example: /heroes/20
+      You can get raw value by using route.snapshot.paramMap.get.
+      Subscribe from route.paramMap to get params
+
+  URL pattern /heroes. Example: /heroes?limit=20
+      You can get raw value by using route.snapshot.queryParamMap
+
+
 # Adding Links
 
 Following tutorial we are linking previous created routes on html page with two methods .
@@ -456,7 +468,7 @@ Following tutorial we are linking previous created routes on html page with two 
 # Route Params
 
 * we are going to grap link parameter on 'tables' path.  
-*  first we need  add variable on 'tables' path in where we created routes(angular 9 > app-routing.module.ts ).
+* first we need  add variable on 'tables' path in where we created routes(angular 9 > app-routing.module.ts ).
 
 ```javascript
 import { NgModule } from '@angular/core';
@@ -607,6 +619,24 @@ this example also bind with variable from file.component.ts file for dynamically
 
 # ngFor
 
+
+> home.ts      
+
+```javascript
+
+fruits: Array<string> = ['Apple', 'Orange', 'Banana'];
+
+```
+
+> home.html      
+
+```javascript
+<p *ngFor="let fruit of fruits; count as i;index as p" >
+    {{fruit}} {{i}} <span></span>
+</p>
+```
+you can use "span" tag inside p tags.
+you can access ngFor variables using {{your_variable_inside_ngFor_condition}}   
 
 
 # get data from api
