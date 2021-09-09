@@ -20,16 +20,26 @@
 
 
 installation
-to work with angular should install node js to your os.
+to work with angular should install node js to your os.    
 
-to check node version
+to check node version    
 $ node -v
 
-to install angular cli globally
+to install angular cli globally    
 $ npm install -g @angular/cli
 
-to check angular version
+to check angular version    
 $ ng --version
+
+to change angular version
+```shell
+ng --version
+npm uninstall -g @angular/cli
+npm cache clean --force
+
+npm install -g @angular/cli@7.2.12
+ng --version
+```
 
 
 to start new project
