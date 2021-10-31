@@ -13,6 +13,7 @@
 [Routing](#Routing)    
 [Directive Introduction](#directive-introduction)    
 [ngFor](#ngfor)
+[ng-template](#ngTemplate)
 [get data from api](#get-data-from-api)
 [angular deploy with node js](#angular-deploy-with-node-js)
 [uninstall angular-cli](#uninstall-angular-cli)
@@ -648,6 +649,190 @@ fruits: Array<string> = ['Apple', 'Orange', 'Banana'];
 you can use "span" tag inside p tags.
 you can access ngFor variables using {{your_variable_inside_ngFor_condition}}   
 
+# ngContent  
+
+passing another template to child inside child template tag.    
+
+>parent.tempate.html file
+
+```html
+<app-testcompo>
+    <p #showme >samadhi laksahan piyasiri</p>
+</app-testcompo>
+```
+
+>child.template.html file   
+
+```html
+<p >testcompo works!</p>
+<ng-content></ng-content>
+```
+
+when we want access parent element within child element.
+so we can use "@ContentChild" inside child compoent.ts file.
+>child.component.ts file      
+
+```typescript
+import { AfterContentInit, Component, ContentChild, ElementRef, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-testcompo',
+  templateUrl: './testcompo.component.html',
+  styleUrls: ['./testcompo.component.scss']
+})
+export class TestcompoComponent implements OnInit,AfterContentInit {
+
+  constructor() { }
+
+  @ContentChild('showme') public compo:ElementRef;
+
+  ngOnInit(): void {
+  }
+
+  ngAfterContentInit():void{
+    console.log('after content init in child :', this.compo);
+  }
+
+}
+```
+
+# ngTemplate
+
+These template elements only work in the presence of structural directives.
+
+different way to access ng-template.
+
+1. by using structural directive.     
+depend on ,mark>*ngIf</mark> directive it will show the ng-template.    
+
+```html
+<div *ngIf="false;else showTemplateOne;" >
+    <p>no template </p>
+</div>
+
+<div *ngIf="true; then showTemplateTwo ;else showTemplateOne;" >
+    <p>no template </p>
+</div>
+
+<ng-template #showTemplateOne >
+    <p>show template one</p>
+</ng-template>
+
+<ng-template #showTemplateTwo >
+    <p>show template two</p>
+</ng-template>
+```
+2. passing data to ng template.    
+you can pass n number of variables to ng-template.   
+you can use <mark>div</mark> instead of <mark>ng-container</mark>.  
+
+```html
+<ng-container *ngTemplateOutlet="showTemplateOne; context:{ varOne : 'show template one', varTwo:'var two value'}">
+    samadhi laksahan
+</ng-container>
+
+<ng-template #showTemplateOne let-varone="varOne" let-vartwo="varTwo">
+    <p>{{varone}}</p>
+    <p>{{vartwo}}</p>
+</ng-template>
+```
+3. send data from component.ts file to ng-template.   
+we need to add id for both tags for access from component.ts file.    
+
+```html
+<ng-container #placeholder> </ng-container>
+
+<ng-template #showTemplate let-varone="varOne" let-vartwo="varTwo" >
+     <p>{{ varone }}</p>
+     <P>{{ vartwo }}</P>
+</ng-template>
+```
+
+compoents.ts file  (static:true)
+
+```typescript
+import { Component, OnInit, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';
+
+@Component({
+  selector: 'app-main',
+  templateUrl: './main.component.html',
+  styleUrls: ['./main.component.scss']
+})
+export class MainComponent implements OnInit {
+
+  constructor() { }
+
+  @ViewChild('placeholder', {read : ViewContainerRef, static:true}) public container:ViewContainerRef;
+  @ViewChild('showTemplate', {static:true}) public template:TemplateRef<any>;
+
+
+  ngOnInit(): void {
+    // because of we are using "static:true" we can use viewchild inside ngOnInit
+    // otherwise we have to use "ngAfterViewInit"
+    this.container.createEmbeddedView(this.template, {varOne:'show template one', varTwo:'show template two'});
+  }
+
+}
+```
+
+4. set compoent using ng-template
+
+```html
+<ng-container [ngTemplateOutlet]="showTemplate" > </ng-container>
+
+<ng-template #showTemplate >
+    <app-testcompo></app-testcompo>
+</ng-template>
+```
+
+5. use like ng-content.
+
+ng-content not work for for-loops    
+
+> parent.component.html
+
+```html
+<app-testcompo>
+
+    <ng-template #testcompo >
+        <p>samadhi laksahan</p>
+    </ng-template>
+
+</app-testcompo>
+```
+
+> child.component.html    
+
+```html
+<p >testcompo works!</p>
+
+<ng-container [ngTemplateOutlet]="testCompoRef">
+</ng-container>
+```
+
+> child.component.ts   
+
+"@ContentChild" usually using for "ng-content" only. But here we are using "@ContentChild"
+for "ngTemplate" for get it's ID(#testcompo) from parent component for trick.
+
+```typescript
+import { Component, ContentChild, OnInit, TemplateRef } from '@angular/core';
+
+@Component({
+  selector: 'app-testcompo',
+  templateUrl: './testcompo.component.html',
+  styleUrls: ['./testcompo.component.scss']
+})
+export class TestcompoComponent implements OnInit {
+
+  constructor() { }
+
+  @ContentChild('testcompo', {static:false})  testCompoRef:TemplateRef<any>;
+
+  ngOnInit(): void {
+  }
+}
+```
 
 # get data from api
 
