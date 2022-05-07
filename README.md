@@ -14,9 +14,14 @@
 [Directive Introduction](#directive-introduction)    
 [ngFor](#ngfor)
 [ng-template](#ngTemplate)
+[import component](#import_component)
 [get data from api](#get-data-from-api)
+[add bootstrap](#add boostrap)
+[add modal with bootstrap](#add_modal_with_bootstrap)
 [angular deploy with node js](#angular-deploy-with-node-js)
 [uninstall angular-cli](#uninstall-angular-cli)
+[Optimize Your Angular App](#Optimize_Your_Angular_App)
+[electron](#electron)
 
 
 
@@ -834,6 +839,175 @@ export class TestcompoComponent implements OnInit {
 }
 ```
 
+# add bootstrap to angular
+this is new method to add full package of boostrap for angular    
+
+option one:    
+```bash
+$ ng add @ng-bootstrap/ng-bootstrap
+```
+
+option two:
+
+```bash
+$ ng install boostrap
+```
+import following bootstrap directory in 'angular.json' file.
+```json
+"styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/styles.scss"
+          ],
+```
+
+# add modal with bootstrap
+
+to install bootstrap
+
+```bash
+npm install --save @ng-bootstrap/ng-bootstrap
+# should take care about related packages version
+#or
+npm add  @ng-bootstrap/ng-bootstrap
+```
+
+>package.json file
+```json
+"@angular/localize": "~10.0.11",
+"@ng-bootstrap/ng-bootstrap": "^8.0.4", # not a latest version
+"bootstrap": "^4.5.0", # not a latest version
+```
+
+>app.module.ts    
+
+```typescript
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+
+@NgModule({
+  declarations: [
+    ...
+  ],
+  imports: [
+    ...
+
+    NgbModule
+
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+>Component Controller
+
+```typescript
+import { TemplateRef, ViewChild } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+@Component({
+  selector: 'app-app-registration',
+  templateUrl: './app-registration.component.html',
+  styleUrls: ['./app-registration.component.css']
+})
+
+export class AppRegistrationComponent implements OnInit {
+
+  @ViewChild('editModal') editModal : TemplateRef<any>; // Note: TemplateRef
+
+  constructor(private modalService: NgbModal) { }
+
+  openModal(){
+    this.modalService.open(this.editModal);
+  }
+
+}
+```
+>Component HTML
+
+```typescript
+<ng-template #editModal let-modal>
+
+<div class="modal-header">
+  <h4 class="modal-title" id="modal-basic-title">Edit Form</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body">
+
+  <form>
+    <div class="form-group">
+      <label for="dateOfBirth">Date of birth</label>
+      <div class="input-group">
+        <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #dp="ngbDatepicker">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="modal.close()">Save</button>
+</div>
+
+</ng-template>
+
+```
+if you just install then you have to install following package
+1. boostrap
+2. localize
+3. add script file for angular.js file.
+
+you can just add component url where you want to display as it button
+
+#  import component
+
+import another components to component.
+
+add "@Injectable" decoretor to top of class.
+
+```typescript
+import { Component, Injectable, OnInit} from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+
+@Component({
+  selector: 'app-processing',
+  templateUrl: './processing.component.html',
+  styleUrls: ['./processing.component.scss']
+})
+export class ProcessingComponent implements OnInit {
+  constructor() {}
+}
+```
+
+and just import component and add it to constructor    
+
+```typescript  
+import { Component,  OnInit } from '@angular/core';
+import { ProcessingComponent } from 'src/app/components/processing/processing.component';
+
+@Component({
+  selector: 'app-main',
+  templateUrl: './main.component.html',
+  styleUrls: ['./main.component.scss']
+})
+export class MainComponent implements OnInit  {
+
+  constructor(private processing: ProcessingComponent){
+  }
+
+  ngOnInit(): void {
+  }
+}
+```
+
 # get data from api
 
 to create new service
@@ -969,4 +1143,216 @@ reinstall angular :
 
 ```shell
 npm install -g @angular/cli
+```
+
+# Optimize Your Angular App
+
+1. ChangeDetectionStrategy.OnPush    
+Angular utilized Zone.js to monkey-patch each asynchronous event, so whenever any event occurs Angular runs change detection over its component tree
+
+This OnPush change detection strategy disables CD to be run on a component and its children.   
+
+2. Detaching the Change Detector
+
+
+3. Local Change Detection  
+
+4. Run outside Angular  
+
+
+5. Use pure pipes  
+  Pipes makes cache.
+  We cache the results and return them when next the same input occurs.
+
+So no matter how many times the pipe is called with an input, the bigFunction is called once and the cached results are just returned on subsequent calls.
+
+> with none pure     
+
+```javascript
+function bigFunction(val) {
+    ...
+    return something
+}@Pipe({
+    name: "util"
+})
+class UtilPipe implements PipeTransform {
+    transform(value) {
+        return bigFunction(value)
+    }
+}
+```
+
+> with  pure     
+
+```javascript
+function bigFunction(val) {
+    ...
+    return something
+}@Pipe({
+    name: "util",
+    pure: true // **add
+})
+class UtilPipe implements PipeTransform {
+    transform(value) {
+        return bigFunction(value)
+    }
+}
+```
+
+6. Use trackBy option for *ngFor directive  
+
+
+
+7. Optimize template expressions     
+
+"func()" will work every CD and it's very bad.
+
+```javascript
+@Component({
+    template: `
+        <div>
+            {{func()}}
+        </div>
+    `
+})
+class TestComponent {    func() {
+        ...
+    }
+}
+```
+
+
+8. Web Workers
+
+JS is a single-threaded language,  non-UI algorithm gets heavy we will see that it will impact the UI thread slowing it down. Web Worker is a feature added that enables us to create and run code in another thread.
+
+9. Lazy-Loading    
+
+```javascript
+const routes: Routes = [
+    {
+        path: '',
+        component: HomeComponent
+    },
+    {
+        path: 'about',
+        loadChildren: ()=> import("./about/about.module").then(m => m.AboutModule)
+    },
+    {
+        path:'viewdetails',
+        loadChildren: ()=> import("./viewdetails/viewdetails.module").then(m => m.ViewDetailsModule)
+    }
+]@NgModule({
+    exports: [RouterModule],
+    imports: [RouterModule.forChild(routes)]
+})
+class AppRoutingModule {}
+```
+10. 10. Preloading
+
+```javascript
+class OurPreloadingStrategy implements PreloadingStrategy {
+    preload(route: Route, fn: ()=> Observable <any>) {
+        // ...
+    }
+}
+```
+
+
+
+
+#electron
+
+to install electron
+
+```bash
+npm install electron --save-dev
+```
+
+change imdex.html file  with single period in front of slash  
+
+```html
+<base href="./">
+```
+
+create main.js file inside src/ file (root directory)
+
+```javascript
+const { app, BrowserWindow } = require('electron');
+
+let win;
+
+function createWindow(){
+    // create browser window
+    win= new BrowserWindow({
+        width: 600,
+        height: 600,
+        backgroundColor: '#ffffff',
+        //icon: `file://${__dirname}/dist/assets/logo.png`
+    })
+
+    win.loadURL(`file://${__dirname}/dist/index.html`);
+
+    // to open devTools during development
+    //win.winContents.openDevTools();
+
+    // event when the window is closed
+    win.on('closed', function(){
+        win= null
+    });
+
+
+
+
+}
+
+// Create window on electron initialization
+app.on('ready',createWindow);
+
+// Quit when all windows are closed
+app.on('window-all-closed', function(){
+
+    // On macOS specific close process
+    if(process.platform !== 'darwin'){
+        app.quit();
+    }
+
+})
+
+app.on('activate', function(){
+
+    // On macOS
+    if(win === null){
+        createWindow();
+    }
+
+})
+```
+
+let change package.json file to build and run electron app.        
+add following two lines.
+
+```json
+{
+  "main": "main.js",
+  "scripts": {
+    "electron": "electron .",
+    "electron-build": "ng build --prod"
+  }
+}
+```
+
+to run electron app with angular    
+
+```bash
+$ npm run electron-build
+$ npm run electron
+```
+
+to create executable files for different OS    
+
+```bash
+npm install electron-packager -g    
+npm install electron-packager -D
+
 ```
